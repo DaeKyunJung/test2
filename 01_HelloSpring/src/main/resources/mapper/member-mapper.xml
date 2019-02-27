@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+	<resultMap id="memberMap" type="map">
+	</resultMap>
+	<select id="login" parameterType="map" resultMap="memberMap">
+		select * from member where userid=#{userId}	
+	</select>
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO MEMBER VALUES(
+			#{userId},#{password},#{userName},#{gender},
+			#{age},#{email},#{phone},#{address},
+			#{hobby, typeHandler=strArray},
+			sysdate)
+	</insert>
+	<select id="selectOne" parameterType="string" resultMap="memberType">
+		SELECT * FROM MEMBER WHERE USERID=#{userId}
+	</select>
+	<resultMap type="member" id="memberType">
+		<result column="hobby" property="hobby" typeHandler="strArray"/>
+	</resultMap>
+	
+	<update id="memberUpdate" parameterType="member">
+		UPDATE MEMBER SET username=#{userName}, 
+					gender=#{gender},
+					age=#{age},
+					email=#{email},
+					phone=#{phone},
+					address=#{address},
+					hobby=#{hobby,typeHandler=strArray}
+		where userid=#{userId}
+	</update>
+	
+	<select id="checkId" parameterType="string" resultType="_int">
+		select count(*) from member where userid=#{userId}
+	</select>
+</mapper>
